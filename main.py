@@ -21,34 +21,30 @@ for x in range(len(data["features"])):
 
      # Format string to match database
      precinctStr = str(precinctNum)
-     precinctStr = "1" + precinctStr[-4:]
+
+     print (precinctStr)
 
      # Get record from database that matches precinct
      ranchoRec = Rancho.find_one({"Precinct Num": precinctStr})
-     print(ranchoRec)
 
 
-#     data["features"][x]["properties"]["Name"] = rec["Name"]
-#     data["features"][x]["properties"]["RegVoters"] = rec["RegVoters"]
-#     data["features"][x]["properties"]["Baseline"] = rec["Baseline"]
-#     data["features"][x]["properties"]["Party"] = rec["Party"]
-#     print(rec["Name"])
-#     print("Distrtit: " + districtNum + " : " + "RecNum: " + str(x))
-#     print(data["features"][x]["properties"]["Name"])
-#     print(rec["RegVoters"])
-#     print(data["features"][x]["properties"]["RegVoters"])
-#     print("--- ")
-#
-# # In[5]:
-#
-#
-# with open("/home/rj/GeoJSONFiles/CDFullOut.geojson", "w") as jsonFile:
-#     json.dump(data, jsonFile, indent=2)
-#
-# # In[ ]:
-#
-#
-# # In[ ]:
+     try:
+          data["features"][x]["properties"]["FLOYD E CLARK"] = ranchoRec["FLOYD E CLARK"]
+          data["features"][x]["properties"]["ROSE STEPHENS OLMSTED"] = ranchoRec["ROSE STEPHENS OLMSTED"]
+          data["features"][x]["properties"]["ASHLEY STICKLER"] = ranchoRec["ASHLEY STICKLER"]
+          data["features"][x]["properties"]["MARY HANNAH"] = ranchoRec["MARY HANNAH"]
+          data["features"][x]["properties"]["LAWRENCE HENDERSON"] = ranchoRec["LAWRENCE HENDERSON"]
+          data["features"][x]["properties"]["ERICK JIMENEZ"] = ranchoRec["ERICK JIMENEZ"]
+          data["features"][x]["properties"]["Write-in"] = ranchoRec["Write-in"]
+          data["features"][x]["properties"]["Total"] = ranchoRec["Total"]
+     except:
+          print("Error on: " + precinctStr)
+          pass
+
+
+
+with open("/home/rj/Documents/Rancho/RanchoGeoJsonOutput.geojson", "w") as jsonFile:
+     json.dump(data, jsonFile, indent=2)
 
 
 
