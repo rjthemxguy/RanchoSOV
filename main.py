@@ -3,16 +3,21 @@ import json
 import pymongo
 from pymongo import MongoClient
 
+# Open GeoJSON File
 with open("/home/rj/Documents/Rancho/RanchoGeoJson.geojson") as jsonFile:
     data = json.load(jsonFile)
 
+# Connect to MongoDB Database and Rancho SOV Collection
 cluster = MongoClient("mongodb+srv://rj:Hapkido123@cluster0.iiuhn.mongodb.net/?retryWrites=true&w=majority")
 db = cluster["IE"]
 Rancho = db["Rancho SOV"]
-#
-#
-# for x in range(len(data["features"])):
-#     districtNum = data["features"][x]["properties"]["DISTRICT"]
+
+
+# Iterate through precincts
+for x in range(len(data["features"])):
+
+     precinctNum = data["features"][x]["properties"]["PRECINCTID"]
+     print (precinctNum)
 #     rec = AD.find_one({"NumOnly": districtNum})
 #
 #     data["features"][x]["properties"]["Name"] = rec["Name"]
