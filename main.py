@@ -7,6 +7,8 @@ with open("/home/rj/Documents/Rancho/RanchoGeoJson.geojson") as jsonFile:
     data = json.load(jsonFile)
 
 
+
+
 cluster = MongoClient("mongodb+srv://rj:Hapkido123@cluster0.iiuhn.mongodb.net/?retryWrites=true&w=majority")
 db = cluster["IE"]
 Rancho = db["Rancho SOV"]
