@@ -16,10 +16,18 @@ Rancho = db["Rancho SOV"]
 # Iterate through precincts
 for x in range(len(data["features"])):
 
-     precinctNum = data["features"][x]["properties"]["PRECINCTID"]
-     print (precinctNum)
-#     rec = AD.find_one({"NumOnly": districtNum})
-#
+     # Get precinct info from GeoJSON file
+     precinctNum = data["features"][x]["properties"]["PRECINCT"]
+
+     # Format string to match database
+     precinctStr = str(precinctNum)
+     precinctStr = "1" + precinctStr[-4:]
+
+     # Get record from database that matches precinct
+     ranchoRec = Rancho.find_one({"Precinct Num": precinctStr})
+     print(ranchoRec)
+
+
 #     data["features"][x]["properties"]["Name"] = rec["Name"]
 #     data["features"][x]["properties"]["RegVoters"] = rec["RegVoters"]
 #     data["features"][x]["properties"]["Baseline"] = rec["Baseline"]
