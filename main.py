@@ -6,7 +6,20 @@ from pymongo import MongoClient
 with open("/home/rj/Documents/Rancho/test.geojson") as jsonFile:
     data = json.load(jsonFile)
 
+def calcPercent(vote, total):
+    if (vote == "0"):
+        return 0;
+
+    try:
+        result = int(round((int(vote) / int(total) * 100), 0))
+        return(result)
+
+    except Exception as e:
+        print(e)
+
+
 # Connect to MongoDB Database and Rancho SOV Collection
+
 
 try:
     cluster = MongoClient("mongodb+srv://rj:Hapkido123@cluster0.iiuhn.mongodb.net/?retryWrites=true&w=majority")
@@ -47,25 +60,35 @@ for x in range(len(data["features"])):
 
     try:
         totalData = data["features"][x]["properties"]["Total"]
-        clarkData = data["features"][x]["properties"]["CLARK"]
+        clarkVote = data["features"][x]["properties"]["CLARK"]
+        olmstedVote = data["features"][x]["properties"]["OLMSTED"]
+        sticklerVote = data["features"][x]["properties"]["STICKLER"]
+        hannahVote = data["features"][x]["properties"]["HANNAH"]
+        hendersonVote = data["features"][x]["properties"]["HENDERSON"]
+        jimenezVote = data["features"][x]["properties"]["JIMENEZ"]
 
-        clarkPercent = int(round((int(clarkData) / int(totalData) * 100), 0))
+        clarkPercent = calcPercent(clarkVote, totalData)
+        olmstedPercent = calcPercent(olmstedVote, totalData)
+        sticklerPercent = calcPercent(sticklerVote, totalData)
+        hannahPercent = calcPercent(hannahVote, totalData)
+        hendersonPercent = calcPercent(hendersonVote, totalData)
+        jimenezPercent = calcPercent(jimenezVote, totalData)
+
+        print (type(totalData))
 
         myquery = {"Precinct Num": precinctStr}
-        newvalues = {"$set": {"votePercentage": clarkPercent}}
+
+        newvalues = {"$set": {"clarkPercent": clarkPercent, "olmstedPercent": olmstedPercent,
+                              "sticklerPercent": sticklerPercent, "hannahPercent": hannahPercent,
+                              "hendersonPercent": hendersonPercent, "jimenezPercent": jimenezPercent}}
 
         Rancho.update_one(myquery, newvalues)
 
 
 
-    except:
-        print("Data Error" + " - " + precinctStr + " - " + clarkData + " - " + totalData)
-        clarkPercent = 0
-        myquery = {"Precinct Num": precinctStr}
-        newvalues = {"$set": {"votePercentage": 0}}
-        Rancho.update_one(myquery, newvalues)
+    except Exception as e:
+        print(e)
         pass
 
-    print(clarkPercent)
 # with open("/home/rj/Documents/Rancho/RanchoGeoJsonOutput.geojson", "w") as jsonFile:
 #      json.dump(data, jsonFile, indent=2)
